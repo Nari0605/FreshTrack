@@ -1,0 +1,116 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>My Profile | FreshTrack</title>
+
+    <style>
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            padding: 24px;
+            background: #f1f6f2;
+            color: #20372b;
+            font-family: Arial, sans-serif;
+        }
+
+        .profile-card {
+            max-width: 620px;
+            margin: 35px auto;
+            padding: 30px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 8px 30px #16372c12;
+        }
+
+        .avatar {
+            width: 82px;
+            height: 82px;
+            display: grid;
+            place-items: center;
+            border-radius: 50%;
+            background: #dcefe2;
+            color: #23784d;
+            font-size: 35px;
+            font-weight: bold;
+        }
+
+        .detail {
+            margin-top: 18px;
+            padding: 14px;
+            background: #f5f8f6;
+            border-radius: 8px;
+            overflow-wrap: anywhere;
+        }
+
+        .muted {
+            color: #718078;
+            font-size: 13px;
+        }
+
+        a, button {
+            display: inline-block;
+            padding: 11px 15px;
+            border-radius: 7px;
+            border: 0;
+            text-decoration: none;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        a {
+            background: #23784d;
+            color: white;
+        }
+
+        button {
+            background: #dc3545;
+            color: white;
+        }
+
+        .actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 24px;
+        }
+    </style>
+</head>
+
+<body>
+    <main class="profile-card">
+        <div class="avatar">
+            {{ user["name"][0]|upper }}
+        </div>
+
+        <h1>My Profile</h1>
+        <p class="muted">Your FreshTrack account information</p>
+
+        <div class="detail">
+            <div class="muted">Full name</div>
+            <strong>{{ user["name"] }}</strong>
+        </div>
+
+        <div class="detail">
+            <div class="muted">Email address</div>
+            <strong>{{ user["email"] }}</strong>
+        </div>
+
+        <div class="detail">
+            <div class="muted">Account created</div>
+            <strong>{{ user["created_at"] }}</strong>
+        </div>
+
+        <div class="actions">
+            <a href="{{ url_for('home') }}">← Back to Dashboard</a>
+
+            <form method="POST" action="{{ url_for('logout') }}">
+                <button type="submit">Log Out</button>
+            </form>
+        </div>
+    </main>
+</body>
+</html>

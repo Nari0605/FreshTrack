@@ -1,0 +1,143 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Create Account | FreshTrack</title>
+
+    <style>
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            display: grid;
+            place-items: center;
+            background: #f1f6f2;
+            font-family: Arial, sans-serif;
+            color: #20372b;
+            padding: 20px;
+        }
+
+        .auth-card {
+            width: 100%;
+            max-width: 430px;
+            padding: 32px;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 8px 30px #16372c15;
+        }
+
+        h1 { margin-bottom: 8px; }
+
+        .muted {
+            color: #718078;
+            line-height: 1.5;
+        }
+
+        label {
+            display: block;
+            margin-top: 16px;
+            font-weight: bold;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            margin-top: 7px;
+            border: 1px solid #d5ded8;
+            border-radius: 8px;
+            font-size: 15px;
+        }
+
+        button {
+            width: 100%;
+            margin-top: 22px;
+            padding: 13px;
+            border: 0;
+            border-radius: 8px;
+            background: #23784d;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .error {
+            padding: 10px;
+            border-radius: 7px;
+            background: #fff0f0;
+            color: #b42318;
+        }
+
+        a { color: #23784d; }
+
+        .footer {
+            text-align: center;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <main class="auth-card">
+        <h1>🌿 FreshTrack</h1>
+        <p class="muted">
+            Create your account to manage your own inventory.
+        </p>
+
+        {% if error %}
+            <p class="error">{{ error }}</p>
+        {% endif %}
+
+        <form method="POST" action="{{ url_for('register') }}">
+            <label for="name">Full name</label>
+            <input
+                id="name"
+                name="name"
+                type="text"
+                autocomplete="name"
+                maxlength="100"
+                required
+            >
+
+            <label for="email">Email address</label>
+            <input
+                id="email"
+                name="email"
+                type="email"
+                autocomplete="email"
+                maxlength="254"
+                required
+            >
+
+            <label for="password">Password</label>
+            <input
+                id="password"
+                name="password"
+                type="password"
+                autocomplete="new-password"
+                minlength="8"
+                required
+            >
+
+            <label for="confirm_password">Confirm password</label>
+            <input
+                id="confirm_password"
+                name="confirm_password"
+                type="password"
+                autocomplete="new-password"
+                minlength="8"
+                required
+            >
+
+            <button type="submit">Create Account</button>
+        </form>
+
+        <p class="footer">
+            Already have an account?
+            <a href="{{ url_for('login') }}">Log in</a>
+        </p>
+    </main>
+</body>
+</html>

@@ -1,0 +1,263 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FreshTrack | Sales History</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+
+    <style>
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            background: #f4f7f5;
+            color: #24352d;
+            font-family: Arial, sans-serif;
+        }
+
+        .layout { display: flex; min-height: 100vh; }
+
+        .sidebar {
+            width: 245px;
+            flex-shrink: 0;
+            background: #16372c;
+            color: white;
+            padding: 25px 15px;
+        }
+
+        .brand { padding: 0 12px 25px; }
+        .brand h2 { margin: 0 0 6px; }
+        .brand p { color: #b8d4c4; font-size: 12px; }
+
+        .nav-link {
+            display: block;
+            padding: 13px 14px;
+            margin: 5px 0;
+            color: #dcebe2;
+            text-decoration: none;
+            border-radius: 8px;
+        }
+
+        .nav-link:hover, .nav-link.active {
+            background: #2d5945;
+            color: white;
+        }
+
+        .main { flex: 1; min-width: 0; padding: 28px; }
+
+        .topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 25px;
+        }
+
+        h1 { margin: 0; font-size: 28px; }
+        .muted { color: #718078; font-size: 14px; }
+
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .card, .panel {
+            background: white;
+            padding: 22px;
+            border-radius: 12px;
+            box-shadow: 0 3px 14px #193b2c0c;
+        }
+
+        .card h3 {
+            margin: 0 0 12px;
+            color: #66756c;
+            font-size: 14px;
+        }
+
+        .number {
+            font-size: 27px;
+            font-weight: bold;
+            overflow-wrap: anywhere;
+        }
+
+        .panel h2 { margin-top: 0; }
+
+        .table-wrap {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 650px;
+        }
+
+        th, td {
+            text-align: left;
+            padding: 14px 12px;
+            border-bottom: 1px solid #e8eeea;
+        }
+
+        th {
+            background: #f5f8f6;
+            color: #52645a;
+            font-size: 13px;
+        }
+
+        .amount { color: #168653; font-weight: bold; }
+
+        .empty {
+            padding: 35px;
+            text-align: center;
+            color: #718078;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-top: 18px;
+            color: #23784d;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        @media (max-width: 800px) {
+            .layout { display: block; }
+            .sidebar { width: 100%; padding: 15px; }
+            .nav-link { display: inline-block; padding: 9px; }
+            .main { padding: 16px; }
+            .cards { grid-template-columns: 1fr; }
+            .topbar { align-items: flex-start; flex-direction: column; }
+        }
+    </style>
+</head>
+
+<body>
+<div class="layout">
+
+    <aside class="sidebar">
+        <div class="brand">
+            <h2>🌿 FreshTrack</h2>
+            <p>EXPIRY & FOOD WASTE MANAGER</p>
+        </div>
+
+        <nav>
+            <a class="nav-link" href="{{ url_for('home') }}">▦ &nbsp; Overview</a>
+            <a class="nav-link" href="{{ url_for('add_product') }}">＋ &nbsp; Add Product</a>
+            <a class="nav-link" href="{{ url_for('inventory') }}">▤ &nbsp; Inventory</a>
+            <a class="nav-link" href="{{ url_for('analytics') }}">▥ &nbsp; Analytics</a>
+            <a class="nav-link" href="{{ url_for('alerts') }}">⚠ &nbsp; Expiry Alerts</a>
+            <a class="nav-link" href="{{ url_for('recommendations') }}">💡 &nbsp; Smart Tips</a>
+            <a class="nav-link active" href="{{ url_for('sales_history') }}">🧾 &nbsp; Sales History</a>
+            <a class="nav-link" href="{{ url_for('profile') }}">👤 &nbsp; My Profile</a>
+
+            <div style="padding:18px 12px;color:#dcebe2;font-size:13px;">
+                Signed in as<br>
+                <strong>{{ user["name"] }}</strong>
+            </div>
+
+            <form method="POST" action="{{ url_for('logout') }}"
+                  style="padding:0 8px;">
+                <button type="submit"
+                        style="width:100%;background:#a63b3b;color:white;
+                               border:0;padding:12px;border-radius:8px;
+                               cursor:pointer;">
+                    ↪ &nbsp; Logout
+                </button>
+            </form>
+        </nav>
+    </aside>
+
+    <main class="main">
+
+        <div class="topbar">
+            <div>
+                <h1>🧾 Sales History</h1>
+                <p class="muted">
+                    Review completed sales and track your recorded revenue.
+                </p>
+            </div>
+            <a class="back-link" href="{{ url_for('inventory') }}">
+                ← Back to Inventory
+            </a>
+        </div>
+
+        <section class="cards">
+            <div class="card">
+                <h3>Total Transactions</h3>
+                <div class="number">{{ summary["total_transactions"] }}</div>
+                <p class="muted">Successful recorded sales</p>
+            </div>
+
+            <div class="card">
+                <h3>Total Units Sold</h3>
+                <div class="number">{{ summary["total_units"] }}</div>
+                <p class="muted">Across all recorded transactions</p>
+            </div>
+
+            <div class="card">
+                <h3>Total Recorded Sales</h3>
+                <div class="number amount">
+                    ₹{{ "%.2f"|format(summary["total_revenue"]) }}
+                </div>
+                <p class="muted">Based on recorded unit prices</p>
+            </div>
+        </section>
+
+        <section class="panel">
+            <h2>Transaction Records</h2>
+            <p class="muted">
+                Newest sales appear first.
+            </p>
+
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Product</th>
+                            <th>Quantity Sold</th>
+                            <th>Unit Price</th>
+                            <th>Total Amount</th>
+                            <th>Date & Time</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                    {% for sale in sales %}
+                        <tr>
+                            <td><strong>{{ sale["product_name"] }}</strong></td>
+                            <td>{{ sale["quantity_sold"] }}</td>
+                            <td>₹{{ "%.2f"|format(sale["unit_price"]) }}</td>
+                            <td class="amount">
+                                ₹{{ "%.2f"|format(sale["total_amount"]) }}
+                            </td>
+                            <td>{{ sale["sold_at"] }}</td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td colspan="5" class="empty">
+                                <div style="font-size:32px;">🧾</div>
+                                <strong>No sales recorded yet</strong>
+                                <p>Sell a product from Inventory to see your
+                                   transaction appear here.</p>
+                                <a class="back-link"
+                                   href="{{ url_for('inventory') }}">
+                                    Go to Inventory →
+                                </a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+    </main>
+</div>
+</body>
+</html>

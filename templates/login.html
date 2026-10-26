@@ -1,0 +1,110 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Login | FreshTrack</title>
+    <style>
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            display: grid;
+            place-items: center;
+            padding: 20px;
+            background: #f1f6f2;
+            font-family: Arial, sans-serif;
+            color: #20372b;
+        }
+
+        .auth-card {
+            width: 100%;
+            max-width: 430px;
+            padding: 32px;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 8px 30px #16372c15;
+        }
+
+        h1 { margin-bottom: 8px; }
+        .muted { color: #718078; line-height: 1.5; }
+
+        label {
+            display: block;
+            margin-top: 18px;
+            font-weight: bold;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            margin-top: 7px;
+            border: 1px solid #d5ded8;
+            border-radius: 8px;
+            font-size: 15px;
+        }
+
+        button {
+            width: 100%;
+            margin-top: 24px;
+            padding: 13px;
+            border: 0;
+            border-radius: 8px;
+            background: #23784d;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .error, .notice {
+            padding: 10px;
+            border-radius: 7px;
+            background: #fff0f0;
+            color: #b42318;
+        }
+
+        .notice {
+            background: #effaf2;
+            color: #23784d;
+        }
+
+        a { color: #23784d; }
+        .footer { text-align: center; margin-top: 20px; }
+    </style>
+</head>
+<body>
+    <main class="auth-card">
+        <h1>🌿 FreshTrack</h1>
+        <p class="muted">Sign in to access your private inventory.</p>
+
+        {% with messages = get_flashed_messages() %}
+            {% for message in messages %}
+                <p class="notice">{{ message }}</p>
+            {% endfor %}
+        {% endwith %}
+
+        {% if error %}
+            <p class="error">{{ error }}</p>
+        {% endif %}
+
+        <form method="POST" action="{{ url_for('login') }}">
+            <label for="email">Email address</label>
+            <input id="email" name="email" type="email"
+                   autocomplete="email" required>
+
+            <label for="password">Password</label>
+            <input id="password" name="password" type="password"
+                   autocomplete="current-password" required>
+
+            <button type="submit">Log In</button>
+        </form>
+
+        <p class="footer">
+            New to FreshTrack?
+            <a href="{{ url_for('register') }}">Create an account</a>
+        </p>
+    </main>
+</body>
+</html>
